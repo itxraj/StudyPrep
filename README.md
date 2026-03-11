@@ -26,3 +26,9 @@ AI
 - OpenAI API / AI model for quiz and flashcard generation
 
 ## 📂 Project Structure
+StudyPrep
+├── client
+├── server
+├── .gitignore
+├── README.md
+└── package.json
