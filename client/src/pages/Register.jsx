@@ -85,16 +85,9 @@ const Register = () => {
                     </div>
                 </div>
 
-                {/* Bottom: Social proof */}
-                <div className="relative z-10 flex items-center gap-3">
-                    <div className="flex -space-x-2">
-                        {[...Array(4)].map((_, i) => (
-                            <div key={i} className="w-8 h-8 rounded-full border-2 border-[#302b63] bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                                {String.fromCharCode(65 + i)}
-                            </div>
-                        ))}
-                    </div>
-                    <span className="text-gray-500 text-sm">Trusted by <strong className="text-gray-300">2,000+</strong> students</span>
+                {/* Bottom */}
+                <div className="relative z-10">
+                    <p className="text-gray-600 text-xs">Free to use · No credit card required</p>
                 </div>
             </div>
 
