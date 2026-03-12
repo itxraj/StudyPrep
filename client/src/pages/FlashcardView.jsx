@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, RotateCcw, Home, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RotateCcw, Home, CheckCircle2, Globe, Lock } from 'lucide-react';
 import api from '../api/axios';
 
 const FlashcardView = () => {
@@ -10,13 +10,18 @@ const FlashcardView = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [masteredCards, setMasteredCards] = useState(new Set());
+    const [isPublic, setIsPublic] = useState(false);
+    const [loggedProgress, setLoggedProgress] = useState(false);
 
     useEffect(() => {
         const fetchDeck = async () => {
             try {
                 const { data } = await api.get('/ai/flashcards');
                 const found = data.find(d => d._id === id);
-                if (found) setDeck(found);
+                if (found) {
+                    setDeck(found);
+                    setIsPublic(found.isPublic || false);
+                }
             } catch (error) {
                 console.error("Error fetching flashcards:", error);
             } finally {
@@ -25,6 +30,22 @@ const FlashcardView = () => {
         };
         fetchDeck();
     }, [id]);
+
+    useEffect(() => {
+        if (deck && masteredCards.size === deck.cards.length && !loggedProgress) {
+            api.post('/progress/session', { flashcardsReviewed: deck.cards.length }).catch(console.error);
+            setLoggedProgress(true);
+        }
+    }, [masteredCards.size, deck, loggedProgress]);
+
+    const togglePublish = async () => {
+        try {
+            const { data } = await api.post(`/community/decks/${id}/publish`);
+            setIsPublic(data.isPublic);
+        } catch (err) {
+            console.error("Failed to publish", err);
+        }
+    };
 
     const handleNext = (e) => {
         e.stopPropagation();
@@ -68,10 +89,18 @@ const FlashcardView = () => {
                     <span className="text-gray-800 dark:text-gray-200 font-medium transition-colors">Flashcards</span>
                 </div>
 
-                <div className="flex items-center gap-3 bg-gray-100/80 dark:bg-gray-800/80 px-4 py-2 rounded-full shadow-sm border border-gray-200/50 dark:border-gray-700/50 transition-colors">
-                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Mastery: {progress}%</span>
-                    <div className="w-24 bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden transition-colors">
-                        <div className="bg-primary-500 h-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                <div className="flex flex-col md:flex-row items-end md:items-center gap-3">
+                    <button
+                        onClick={togglePublish}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-sm border transition-colors text-sm font-semibold ${isPublic ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 dark:hover:bg-indigo-500/20' : 'bg-white/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                    >
+                        {isPublic ? <><Globe className="w-4 h-4" /> Public</> : <><Lock className="w-4 h-4" /> Private</>}
+                    </button>
+                    <div className="flex items-center gap-3 bg-gray-100/80 dark:bg-gray-800/80 px-4 py-2 rounded-full shadow-sm border border-gray-200/50 dark:border-gray-700/50 transition-colors">
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Mastery: {progress}%</span>
+                        <div className="w-24 bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden transition-colors">
+                            <div className="bg-primary-500 h-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,7 +193,7 @@ const FlashcardView = () => {
             {/* Quick Restart */}
             <div className="flex justify-center mt-12">
                 <button
-                    onClick={() => { setCurrentIndex(0); setIsFlipped(false); setMasteredCards(new Set()); }}
+                    onClick={() => { setCurrentIndex(0); setIsFlipped(false); setMasteredCards(new Set()); setLoggedProgress(false); }}
                     className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium px-4 py-2 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 rounded-full transition-colors text-sm"
                 >
                     <RotateCcw className="w-4 h-4" /> Start Over

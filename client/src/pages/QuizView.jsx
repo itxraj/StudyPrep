@@ -52,11 +52,16 @@ const QuizView = () => {
         if (isCorrect) setScore(prev => prev + 1);
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (currentQuestionIdx < quiz.questions.length - 1) {
             setCurrentQuestionIdx(prev => prev + 1);
         } else {
             setIsFinished(true);
+            try {
+                await api.post('/progress/session', { quizzesCompleted: 1 });
+            } catch (err) {
+                console.error("Failed to log progress", err);
+            }
         }
     };
 

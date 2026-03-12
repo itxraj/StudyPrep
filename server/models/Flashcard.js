@@ -17,6 +17,9 @@ const flashcardSetSchema = new mongoose.Schema({
         required: true,
     },
     cards: [flashcardSchema],
+    isPublic: { type: Boolean, default: false },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     createdAt: { type: Date, default: Date.now },
 });
 

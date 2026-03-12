@@ -42,32 +42,32 @@ const Dashboard = () => {
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass dark:glass-dark rounded-2xl p-6 flex flex-col items-start gap-4 transition-colors group">
-                    <div className="bg-blue-50/50 dark:bg-blue-500/10 p-3 rounded-xl border border-blue-100/50 dark:border-blue-500/20 transition-colors">
-                        <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white dark:bg-[#111] rounded-2xl border border-gray-200/80 dark:border-white/[0.08] p-5 flex items-center gap-4 transition-colors">
+                    <div className="bg-blue-50 dark:bg-blue-500/10 p-2.5 rounded-xl border border-blue-100 dark:border-blue-500/20">
+                        <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                        <p className="text-3xl font-bold text-gray-900 dark:text-white transition-colors tracking-tight">{documents.length}</p>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium text-sm transition-colors mt-1">Documents Uploaded</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{documents.length}</p>
+                        <p className="text-gray-400 dark:text-gray-500 text-xs font-medium">Documents</p>
                     </div>
                 </div>
-                <div className="glass dark:glass-dark rounded-2xl p-6 flex flex-col items-start gap-4 transition-colors group">
-                    <div className="bg-green-50/50 dark:bg-green-500/10 p-3 rounded-xl border border-green-100/50 dark:border-green-500/20 transition-colors">
-                        <BrainCircuit className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <div className="bg-white dark:bg-[#111] rounded-2xl border border-gray-200/80 dark:border-white/[0.08] p-5 flex items-center gap-4 transition-colors">
+                    <div className="bg-green-50 dark:bg-green-500/10 p-2.5 rounded-xl border border-green-100 dark:border-green-500/20">
+                        <BrainCircuit className="w-5 h-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                        <p className="text-3xl font-bold text-gray-900 dark:text-white transition-colors tracking-tight">--</p>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium text-sm transition-colors mt-1">Quizzes Taken</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">--</p>
+                        <p className="text-gray-400 dark:text-gray-500 text-xs font-medium">Quizzes Taken</p>
                     </div>
                 </div>
-                <div className="glass dark:glass-dark rounded-2xl p-6 flex flex-col items-start gap-4 transition-colors group">
-                    <div className="bg-purple-50/50 dark:bg-purple-500/10 p-3 rounded-xl border border-purple-100/50 dark:border-purple-500/20 transition-colors">
-                        <LibraryBig className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="bg-white dark:bg-[#111] rounded-2xl border border-gray-200/80 dark:border-white/[0.08] p-5 flex items-center gap-4 transition-colors">
+                    <div className="bg-purple-50 dark:bg-purple-500/10 p-2.5 rounded-xl border border-purple-100 dark:border-purple-500/20">
+                        <LibraryBig className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
-                        <p className="text-3xl font-bold text-gray-800 dark:text-white transition-colors">--</p>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium transition-colors">Flashcards Mastered</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">--</p>
+                        <p className="text-gray-400 dark:text-gray-500 text-xs font-medium">Flashcards Mastered</p>
                     </div>
                 </div>
             </div>
@@ -78,12 +78,12 @@ const Dashboard = () => {
                 {loading ? (
                     <div className="flex justify-center p-12"><span className="loader"></span></div>
                 ) : documents.length === 0 ? (
-                    <div className="glass dark:glass-dark rounded-3xl p-12 text-center flex flex-col items-center gap-4 transition-colors">
-                        <div className="bg-primary-50 dark:bg-primary-900/20 p-6 rounded-full inline-block transition-colors">
-                            <Upload className="w-12 h-12 text-primary-400 dark:text-primary-500" />
+                    <div className="bg-white dark:bg-[#111] border border-gray-200/80 dark:border-white/[0.08] rounded-2xl p-10 text-center flex flex-col items-center gap-4">
+                        <div className="bg-gray-50 dark:bg-white/[0.04] p-5 rounded-full">
+                            <Upload className="w-10 h-10 text-gray-300 dark:text-gray-600" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 transition-colors">No documents yet</h3>
-                        <p className="text-gray-500 dark:text-gray-400 max-w-sm transition-colors">Upload your first PDF lecture notes or textbook chapter to start generating quizzes.</p>
+                        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">No documents yet</h3>
+                        <p className="text-gray-400 dark:text-gray-500 max-w-sm text-sm">Upload your first PDF to start generating quizzes and flashcards.</p>
                         <button
                             onClick={() => setIsUploadOpen(true)}
                             className="mt-2 text-primary-600 font-semibold hover:underline"
@@ -94,7 +94,7 @@ const Dashboard = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {documents.map((doc) => (
-                            <div key={doc._id} className="glass dark:glass-dark rounded-2xl p-5 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50/50 dark:hover:bg-[#151515] transition-all group flex flex-col h-full cursor-pointer relative overflow-hidden">
+                            <div key={doc._id} className="bg-white dark:bg-[#111] rounded-2xl border border-gray-200/80 dark:border-white/[0.08] p-5 hover:border-gray-300 dark:hover:border-white/[0.15] transition-all group flex flex-col h-full cursor-pointer relative overflow-hidden">
                                 <Link to={`/document/${doc._id}`} className="absolute inset-0 z-0"></Link>
                                 <div className="flex items-start justify-between mb-4 relative z-10">
                                     <div className="bg-gray-100/80 dark:bg-gray-800/80 p-3 rounded-xl flex-shrink-0 transition-colors border border-gray-200/50 dark:border-gray-700/50 group-hover:bg-white dark:group-hover:bg-gray-800">

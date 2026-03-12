@@ -38,7 +38,7 @@ body {
 }
 
 .glass-dark {
-  @apply bg-[#111]/60 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/50 transition-colors;
+  @apply bg-[#111]/70 backdrop-blur-xl border border-white/[0.08] shadow-xl shadow-black/30 transition-colors;
 }
 
 .glow-accent {
@@ -80,4 +80,31 @@ body {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+/* Float animation for background orbs */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(15px) scale(0.95);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
 }

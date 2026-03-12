@@ -16,25 +16,34 @@ const Layout = () => {
 
     return (
         <div className="min-h-screen flex flex-col font-sans relative overflow-x-hidden selection:bg-primary-500/30">
-            {/* Premium Minimal SaaS Background */}
-            <div className="fixed inset-0 -z-10 bg-[#fafafa] dark:bg-[#0a0a0a] transition-colors duration-500">
-                {/* Subtle top glow for dark mode, like Vercel/Linear */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 dark:bg-primary-500-[0.03] blur-[120px] rounded-full mix-blend-screen pointer-events-none hidden dark:block"></div>
-
-                {/* Subtle geometric gradient for light mode */}
-                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-br from-primary-400/10 to-transparent blur-[100px] rounded-full mix-blend-multiply opacity-50 dark:hidden"></div>
+            {/* App Background */}
+            <div className="fixed inset-0 -z-10 bg-[#f8f9fa] dark:bg-[#09090b] transition-colors duration-500">
+                {/* Subtle accent glow — dark mode */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-500/[0.04] blur-[120px] rounded-full pointer-events-none hidden dark:block"></div>
+                {/* Subtle accent — light mode */}
+                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-br from-primary-400/[0.08] to-transparent blur-[100px] rounded-full mix-blend-multiply opacity-50 dark:hidden"></div>
             </div>
 
-            <nav className="glass dark:glass-dark sticky top-0 z-50 px-6 py-4 flex justify-between items-center transition-colors duration-500 border-b border-gray-200/50 dark:border-white/5">
-                <Link to="/" className="flex items-center gap-3 group">
-                    <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-2.5 shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-all group-hover:scale-105">
-                        <BookOpen className="text-white w-5 h-5" />
+            <nav className="sticky top-0 z-50 px-6 py-4 flex justify-between items-center transition-colors duration-500 bg-white/70 dark:bg-[#09090b]/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/[0.06]">
+                <div className="flex items-center gap-8 md:gap-12">
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-2.5 shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-all group-hover:scale-105">
+                            <BookOpen className="text-white w-5 h-5" />
+                        </div>
+                        <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 tracking-tight hidden sm:block">
+                            AI Study Assist
+                        </span>
+                    </Link>
+
+                    {/* Core Nav Links */}
+                    <div className="hidden md:flex items-center gap-6 text-sm font-bold">
+                        <Link to="/rooms" className="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Study Rooms</Link>
+                        <Link to="/community" className="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Community Decks</Link>
+                        <Link to="/progress" className="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Progress</Link>
                     </div>
-                    <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 tracking-tight">
-                        AI Study Assist
-                    </span>
-                </Link>
-                <div className="flex items-center gap-3 md:gap-5">
+                </div>
+
+                <div className="flex items-center gap-3 md:gap-4">
                     <button
                         onClick={toggleTheme}
                         className="p-2.5 rounded-full bg-white/50 hover:bg-white dark:bg-gray-800/50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 shadow-sm border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-md transition-all hover:scale-110 active:scale-95"
