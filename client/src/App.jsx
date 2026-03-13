@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
+import Pricing from './pages/Pricing';
 import Dashboard from './pages/Dashboard';
 import DocumentView from './pages/DocumentView';
 import QuizView from './pages/QuizView';
@@ -18,6 +19,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/landing" element={<LandingPage />} />
+                <Route path="/pricing" element={<Pricing />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 

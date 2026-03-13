@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
     FileText, BrainCircuit, LibraryBig, ArrowRight, Home,
-    Sparkles, Clock, Layers, ChevronRight, Trash2
+    Sparkles, Clock, Layers, ChevronRight, Trash2, Zap
 } from 'lucide-react';
 import api from '../api/axios';
 
@@ -16,6 +16,7 @@ const DocumentView = () => {
     const [generatingQuiz, setGeneratingQuiz] = useState(false);
     const [generatingCards, setGeneratingCards] = useState(false);
     const [aiError, setAiError] = useState('');
+    const [limitReached, setLimitReached] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
@@ -45,11 +46,15 @@ const DocumentView = () => {
     const handleGenerateQuiz = async () => {
         setGeneratingQuiz(true);
         setAiError('');
+        setLimitReached(false);
         try {
             const { data } = await api.post('/ai/quiz', { documentId: id, numQuestions: 5 });
             setQuizzes([data, ...quizzes]);
             navigate(`/quiz/${data._id}`);
         } catch (error) {
+            if (error.response?.data?.limitReached) {
+                setLimitReached(true);
+            }
             setAiError(error.response?.data?.message || 'Error generating quiz');
         } finally {
             setGeneratingQuiz(false);
@@ -59,11 +64,15 @@ const DocumentView = () => {
     const handleGenerateFlashcards = async () => {
         setGeneratingCards(true);
         setAiError('');
+        setLimitReached(false);
         try {
             const { data } = await api.post('/ai/flashcards', { documentId: id, numCards: 5 });
             setFlashcards([data, ...flashcards]);
             navigate(`/flashcards/${data._id}`);
         } catch (error) {
+            if (error.response?.data?.limitReached) {
+                setLimitReached(true);
+            }
             setAiError(error.response?.data?.message || 'Error generating flashcards');
         } finally {
             setGeneratingCards(false);
@@ -142,9 +151,29 @@ const DocumentView = () => {
             </div>
 
             {/* Error */}
-            {aiError && (
+            {aiError && !limitReached && (
                 <div className="bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 p-4 rounded-xl border border-red-100 dark:border-red-500/20 text-sm">
                     {aiError}
+                </div>
+            )}
+
+            {limitReached && (
+                <div className="bg-gradient-to-r from-indigo-500/10 to-violet-500/10 dark:from-indigo-500/[0.07] dark:to-violet-500/[0.07] border border-indigo-200 dark:border-indigo-500/20 rounded-xl p-5">
+                    <div className="flex items-start gap-3">
+                        <div className="bg-indigo-100 dark:bg-indigo-500/20 p-2 rounded-lg flex-shrink-0">
+                            <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <div>
+                            <p className="font-semibold text-sm text-gray-900 dark:text-white mb-1">Free plan limit reached</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">You've used your free AI generation. Upgrade to keep creating quizzes and flashcards.</p>
+                            <Link
+                                to="/pricing"
+                                className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
+                            >
+                                View plans <ArrowRight className="w-3 h-3" />
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             )}
 

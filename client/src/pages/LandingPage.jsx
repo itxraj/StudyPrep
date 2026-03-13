@@ -142,10 +142,13 @@ const LandingPage = () => {
                         <span className="font-bold text-sm tracking-tight">AI Study Assist</span>
                     </Link>
                     <div className="flex items-center gap-2">
+                        <Link to="/pricing" className="text-sm text-gray-400 hover:text-white px-4 py-2 rounded-lg transition-colors">
+                            Pricing
+                        </Link>
                         <Link to="/login" className="text-sm text-gray-400 hover:text-white px-4 py-2 rounded-lg transition-colors">
                             Log in
                         </Link>
-                        <Link to="/register" className="text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition-colors">
+                        <Link to="/register" className="text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition-colors text-white">
                             Sign up
                         </Link>
                     </div>

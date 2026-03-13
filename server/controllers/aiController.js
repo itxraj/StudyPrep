@@ -1,7 +1,25 @@
 import Document from '../models/Document.js';
 import Quiz from '../models/Quiz.js';
 import Flashcards from '../models/Flashcard.js';
+import User from '../models/User.js';
 import { generateQuizService, generateFlashcardsService } from '../services/aiService.js';
+
+// Plan limits: total AI generations allowed (quizzes + flashcards combined)
+const PLAN_LIMITS = {
+    free: 1,
+    pro: 50,
+    unlimited: Infinity,
+};
+
+const checkGenerationLimit = async (userId) => {
+    const user = await User.findById(userId);
+    const plan = user.plan || 'free';
+    const limit = PLAN_LIMITS[plan] ?? 1;
+    const quizCount = await Quiz.countDocuments({ userId });
+    const flashcardCount = await Flashcards.countDocuments({ userId });
+    const totalUsed = quizCount + flashcardCount;
+    return { allowed: totalUsed < limit, totalUsed, limit, plan };
+};
 
 export const generateQuiz = async (req, res) => {
     try {
@@ -10,6 +28,15 @@ export const generateQuiz = async (req, res) => {
 
         if (!document) {
             return res.status(404).json({ message: 'Document not found or unauthorized' });
+        }
+
+        // Check plan limit
+        const { allowed } = await checkGenerationLimit(req.user._id);
+        if (!allowed) {
+            return res.status(403).json({
+                message: 'You\'ve used your free AI generation. Upgrade your plan to create more quizzes and flashcards.',
+                limitReached: true,
+            });
         }
 
         const questionsParams = req.body.numQuestions || 10;
@@ -35,6 +62,15 @@ export const generateFlashcards = async (req, res) => {
 
         if (!document) {
             return res.status(404).json({ message: 'Document not found or unauthorized' });
+        }
+
+        // Check plan limit
+        const { allowed } = await checkGenerationLimit(req.user._id);
+        if (!allowed) {
+            return res.status(403).json({
+                message: 'You\'ve used your free AI generation. Upgrade your plan to create more quizzes and flashcards.',
+                limitReached: true,
+            });
         }
 
         const cardsParams = req.body.numCards || 5;
